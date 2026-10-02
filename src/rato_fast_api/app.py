@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI  
 
 app = FastAPI() 
@@ -7,8 +6,4 @@ app = FastAPI()
 async def health_check():
     return {"status": "OK"}
 
-@app.get("/")
-async def function():
-    return {"message": "hello, World!"}
-    
 
