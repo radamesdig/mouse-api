@@ -16,10 +16,13 @@ Acompanha as revisões de cada nota. A revisão é **sem consulta**: você expli
 
 | Nota | Assunto | Estudado | 1ª (24h) | 2ª (7d) | 3ª (15d) | 4ª (+30d) | 5ª (+30d) | 6ª (+30d) |
 |---|---|---|---|---|---|---|---|---|
-| [0.0](notas/0.0-por-que-fila.md) | Por que a notificação vai para uma fila | 2026-09-23 | ☑ 09-24 | ☐ 09-30 | ☐ 10-08 | ☐ 11-07 | ☐ 12-07 | ☐ 2027-01-06 |
+| [0.0](notas/0.0-por-que-fila.md) | Por que a notificação vai para uma fila | 2026-09-23 | ☑ 09-24 | ☑ 10-01 | ☐ 10-08 | ☐ 11-07 | ☐ 12-07 | ☐ 2027-01-06 |
+| [1.1](notas/1.1-classe-pydantic.md) | Modelo Pydantic: entrada × saída e validação na porta da API | 2026-10-04 | ☑ 10-06 | ☐ 10-11 | ☐ 10-19 | ☐ 11-18 | ☐ 12-18 | ☐ 2027-01-17 |
 
 ## Histórico
 
 | Data | Nota | Revisão | Como foi |
 |---|---|---|---|
 | 2026-09-24 | 0.0 | 1ª | Explicou os 3 problemas sem consulta. Foi para "Domina". |
+| 2026-10-01 | 0.0 | 2ª (1 dia de atraso) | Com ajuda. De primeira, lembrou só de falha parcial (e citou deduplicação, que é da Fase 4). Com perguntas, explicou lentidão e acoplamento pelo mecanismo, sem os nomes. Fica em "Domina"; na 3ª, cobrar os três nomes de primeira. |
+| 2026-10-06 | 1.1 | 1ª (1 dia de atraso) | Com uma pergunta de ajuda. Acertou entrada × saída, `default_factory` e que os erros voltam juntos num só `422`. Errou de primeira ao dizer que "a função roda"; corrigiu sozinho: a validação acontece antes. Fica em "Reconheço"; na 2ª, cobrar o "antes da função" de primeira. |
