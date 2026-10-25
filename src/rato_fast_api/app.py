@@ -1,4 +1,4 @@
-from fastapi import FastAPI 
+from fastapi import FastAPI, HTTPException 
 from pydantic import BaseModel
 from datetime import datetime, timezone, date 
 import uuid
@@ -36,6 +36,19 @@ async def criar_pessoa(pessoa_entrada: CriarPessoa):
     lista_de_pessoas_saida.append(pessoa_saida)
     return pessoa_saida
 
+@app.get("/api/v1/pessoas/{id}")
+async def buscar_pessoa(id: uuid.UUID):
+    for pessoa in lista_de_pessoas_saida:
+        if pessoa.id == id: 
+            return pessoa             
+    raise HTTPException(status_code=404, detail="Pessoa não encontrada")    
+
 @app.get("/api/v1/pessoas")
-async def buscar_pessoa():
+async def buscar_lista_pessoas():
     return lista_de_pessoas_saida
+             
+    
+    
+    
+    
+    
