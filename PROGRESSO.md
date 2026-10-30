@@ -2,8 +2,8 @@
 
 ## ▶ Hoje: a única coisa
 
-**Abertura:** revisões vencidas, sem consulta: **3ª do 0.0 · por que fila** (vence em 10-08; cobrar os **três nomes** de primeira) e, se já for 10-11, **2ª do 1.1 · modelo Pydantic** (cobrar o "valida **antes** da função" de primeira). O "de cabeça" da sessão anterior: explicar o que o `**` faz em `RetornarPessoa(**pessoa_entrada.model_dump(), ...)`.
-**Depois: passo 1.2.** Nova branch a partir da `main` atualizada → `GET /api/v1/pessoas` (lista) e `GET /api/v1/pessoas/{id}` (busca na `lista_de_pessoas_saida`) → `404` quando o `id` não existe. É aqui que entra o mínimo de **HTTP** que ficou estacionado (servidor × cliente, pedido × resposta, verbo, status).
+**Abertura (feita em 2026-10-27):** 1ª revisão do 1.2 registrada no `REVISOES.md`. 1.2 fechado em 2026-10-30 (PR #2, diário). Falta só o commit das notas/registros na `main`.
+**Passo 1.3:** Nova branch a partir da `main` atualizada → `PUT /api/v1/pessoas/{id}` e `DELETE /api/v1/pessoas/{id}` (soft delete: `ativo = False`, não remove da lista) → `204`.
 
 ## Nível de cobrança atual
 
@@ -39,7 +39,7 @@ Profundidade: **E** = Essencial · **S** = Só o suficiente · **X** = Estaciona
 | # | Passo | Prof. | Por que agora | Feito |
 |---|---|:-:|---|:-:|
 | 1.1 | `POST /api/v1/pessoas` guardando em memória · Pydantic (campos e tipos) · `201` · **GitHub remoto, branch e PR** | E (Pydantic) · S (Git/HTTP) | É a primeira funcionalidade do CRUD; o desafio exige branch por feature | ☑ PR #1 com merge na `main` (`66d31a9`) |
-| 1.2 | `GET` lista e `GET` por id, em memória · `404` | E | Ler o que foi criado; primeiro status de erro | ☐ |
+| 1.2 | `GET` lista e `GET` por id, em memória · `404` | E | Ler o que foi criado; primeiro status de erro | ☑ PR #2 com merge na `main` (`c21d234`) |
 | 1.3 | `PUT` e `DELETE` (soft delete) · `204` | E | Fecha o CRUD | ☐ |
 | 1.4 | Algoritmo do CPF e regra da idade ≥ 18 · nome 3–150, formato do e-mail e telefone E.164 *(vieram do 1.1)* · `422` | E | Lógica de domínio que o desafio quer ver escrita à mão | ☐ |
 | 1.5 | Postgres subindo no Docker + SQL básico e `UNIQUE` | S | Reiniciar o servidor apaga a lista: chegou a hora do banco | ☐ |
@@ -78,6 +78,7 @@ _Só entra aqui o que você já reproduziu ou explicou sem consulta._
 - Os 3 problemas do fluxo síncrono — lentidão, acoplamento e falha parcial — e por que eles justificam a fila. Explicado sem consulta em 2026-09-24.
 - Navegar no terminal: `pwd`, `cd`, `ls -a`, os atalhos `~`, `.` e `..`, a árvore a partir de `/` e o Tab.
 - Investigar uma ferramenta de terminal por conta própria: `--version`, `which`, `--help` e subcomando × opção (`pyenv versions` × `--version`). Feito sozinho, errando e corrigindo pela ajuda da própria ferramenta, em 2026-09-24.
+- `GET` por id tem três saídas: `200` (achou), `404` (tipo certo, mas não existe — erro que **você** levanta com `HTTPException`) e `422` (tipo errado — a tipagem `uuid.UUID` no parâmetro barra **antes** da função). Lista vazia volta `[]` com `200`; `null` só se a função não tivesse `return`. Explicado sem consulta na 1ª revisão, em 2026-10-27.
 
 ## Reconheço, mas ainda não faço sozinho
 
@@ -93,7 +94,8 @@ _Só entra aqui o que você já reproduziu ou explicou sem consulta._
 - Status de sucesso fica no **decorador** (`status_code=201`), porque faz parte do contrato da rota; os **parâmetros da função** são o que chega na requisição. *(Em 2026-10-06 explicou sozinho por que `pessoa_saida` não pode ser parâmetro: o cliente teria que mandar `id`, `ativo` e datas.)*
 - `pessoa_entrada: CriarPessoa` é **anotação de tipo**: quem cria o objeto é o FastAPI (lê o JSON → valida → instancia → passa para a função). Disse sozinho que, sem `cpf`, "o objeto nem chega a ser criado".
 - **Classe × objeto**: `RetornarPessoa` é o molde, `pessoa_entrada` é o formulário preenchido. A 1ª tentativa foi `RetornarPessoa.model_dump()` (na classe); corrigiu com perguntas. Vocabulário: "instanciar a classe" / "instância da classe".
-- **`**` desfaz a mala**: na **chamada**, espalha um `dict` em `campo=valor`; na **definição** (`def f(**kwargs)`), junta. Montou sozinho `RetornarPessoa(**pessoa_entrada.model_dump(), id=..., ...)` e explicou o ganho: campo novo só muda no modelo. Travou bastante antes (vídeos sobre `**kwargs` confundiram as direções).
+- **`**` desfaz a mala**: na **chamada**, espalha um `dict` em `campo=valor`; na **definição** (`def f(**kwargs)`), junta. Montou sozinho `RetornarPessoa(**pessoa_entrada.model_dump(), id=..., ...)` e explicou o ganho: campo novo só muda no modelo. Travou bastante antes (vídeos sobre `**kwargs` confundiram as direções). Em 2026-10-09, no "de cabeça", ainda escreveu `dict.nome = "valor"`; só acertou `nome="valor"` com a dica 1 (nome do parâmetro solto, sem ponto, à esquerda do `=`).
+- **Quem define os campos é o molde (a classe)**: chave a mais no JSON (`apelido`) é ignorada pelo Pydantic por padrão, sem erro e sem aparecer na resposta. Hipótese inicial ("vira campo") derrubada por experimento no `curl` em 2026-10-09. O `ativo` fora da chamada de `RetornarPessoa` deu `500` (erro seu, dentro da função).
 - **Bug silencioso**: campo opcional esquecido vira `null` sem erro (o `telefone`). O obrigatório grita `Field required`, o opcional não. Erro de validação **dentro** da função vira `500`, não `422`.
 - Gerar a hora **uma vez** numa variável (`agora`) para `criado_em` e `atualizado_em`, e com `timezone.utc`.
 - Variável criada dentro da função recomeça a cada chamada; a lista em memória fica **fora**. Hipótese inicial era "dentro" — corrigiu pelo experimento. Reiniciar o servidor apaga a lista (a dor que traz o banco no 1.5).
@@ -128,3 +130,5 @@ _Temas que apareceram fora do foco. Não se perdem, mas também não entram agor
 | 2026-09-26 · 0.3 · esqueleto rodando | Consigo criar rotas, subir um servidor com FastAPI, definir o que colocar no `.gitignore` e usar o `--help` quando não sei o que fazer |
 | 2026-10-01 · 1.1 · criar pessoa em memória | Consigo declarar uma classe do Pydantic de forma consciente |
 | 2026-10-06 · 1.1 · modelo de saída | Agora consigo criar um fluxo completo de entrada e saída de dados numa rota de uma API |
+| 2026-10-09 · 1.2 · GET lista | Agora consigo compreender a importância de usar retorno na função |
+| 2026-10-24 · 1.2 · GET por id e 404 | Agora consigo criar um endpoint que faz busca usando um parâmetro informado |

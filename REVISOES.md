@@ -16,8 +16,9 @@ Acompanha as revisões de cada nota. A revisão é **sem consulta**: você expli
 
 | Nota | Assunto | Estudado | 1ª (24h) | 2ª (7d) | 3ª (15d) | 4ª (+30d) | 5ª (+30d) | 6ª (+30d) |
 |---|---|---|---|---|---|---|---|---|
-| [0.0](notas/0.0-por-que-fila.md) | Por que a notificação vai para uma fila | 2026-09-23 | ☑ 09-24 | ☑ 10-01 | ☐ 10-08 | ☐ 11-07 | ☐ 12-07 | ☐ 2027-01-06 |
-| [1.1](notas/1.1-classe-pydantic.md) | Modelo Pydantic: entrada × saída e validação na porta da API | 2026-10-04 | ☑ 10-06 | ☐ 10-11 | ☐ 10-19 | ☐ 11-18 | ☐ 12-18 | ☐ 2027-01-17 |
+| [0.0](notas/0.0-por-que-fila.md) | Por que a notificação vai para uma fila | 2026-09-23 | ☑ 09-24 | ☑ 10-01 | ☑ 10-09 | ☐ 11-07 | ☐ 12-07 | ☐ 2027-01-06 |
+| [1.1](notas/1.1-classe-pydantic.md) | Modelo Pydantic: entrada × saída e validação na porta da API | 2026-10-04 | ☑ 10-06 | ☑ 10-09 | ☑ 10-24 | ☐ 11-18 | ☐ 12-18 | ☐ 2027-01-17 |
+| [1.2](notas/1.2-GET-e-404.md) | GET lista e por id: 200, 404 e 422 | 2026-10-24 | ☑ 10-27 | ☐ 10-31 | ☐ 11-08 | ☐ 12-08 | ☐ 2027-01-07 | ☐ 2027-02-06 |
 
 ## Histórico
 
@@ -26,3 +27,9 @@ Acompanha as revisões de cada nota. A revisão é **sem consulta**: você expli
 | 2026-09-24 | 0.0 | 1ª | Explicou os 3 problemas sem consulta. Foi para "Domina". |
 | 2026-10-01 | 0.0 | 2ª (1 dia de atraso) | Com ajuda. De primeira, lembrou só de falha parcial (e citou deduplicação, que é da Fase 4). Com perguntas, explicou lentidão e acoplamento pelo mecanismo, sem os nomes. Fica em "Domina"; na 3ª, cobrar os três nomes de primeira. |
 | 2026-10-06 | 1.1 | 1ª (1 dia de atraso) | Com uma pergunta de ajuda. Acertou entrada × saída, `default_factory` e que os erros voltam juntos num só `422`. Errou de primeira ao dizer que "a função roda"; corrigiu sozinho: a validação acontece antes. Fica em "Reconheço"; na 2ª, cobrar o "antes da função" de primeira. |
+| 2026-10-09 | 0.0 | 3ª (1 dia de atraso) | De primeira, os três nomes: acoplamento, falha parcial e lentidão. Fica em "Domina". |
+| 2026-10-09 | 1.1 | 2ª (adiantada: vencia em 10-11) | Acertou entrada × saída e o `422` com todos os campos. No "antes da função", precisou de uma pergunta, mas explicou o mecanismo: sem o objeto, a função não roda porque ele é o parâmetro. Fica em "Reconheço"; na 3ª, cobrar de primeira. |
+| 2026-10-09 | 1.1 | "De cabeça" do `**` | Origem do dicionário (`pessoa_entrada.model_dump()`) certa depois de uma correção. Travou ao chamar a classe pelo nome: escreveu `dict.nome = "valor"` e só acertou `nome="valor", cpf="valor"` depois da dica 1; a regra em palavras saiu ao contrário. Segue como ponto fraco. |
+| 2026-10-24 | 1.1 | 3ª (5 dias de atraso) | O "antes da função" saiu de primeira, com o porquê (a validação na `CriarPessoa` barra antes); não lembrou o nome `422`. Na chamada pelo nome, errou de novo: escreveu `RetornarPessoa("nome_completo": "João", ...)` (aspas e dois-pontos, como num dict) em vez de `nome_completo="João"`. A explicação do `**` ficou na metade: disse "desempacota", mas não que as chaves viram nomes de parâmetro. Passa na 3ª; a chamada pelo nome segue em "Reconheço" e na 4ª (11-18) cobrar de primeira. |
+| 2026-10-27 | 1.2 | 1ª (2 dias de atraso) | De primeira: 200, 404 e 422, e que no 422 a função nem roda. `[]` × `null` com o porquê. Com uma pergunta, localizou quem valida o `id`: a tipagem `uuid.UUID` no parâmetro da função, não uma classe dele. Fica em "Domina". |
+| 2026-10-27 | 1.1 | Extra: chamada pelo nome | **Primeira vez certa de primeira**: `RetornarPessoa(nome="Nome", cpf=...)`, sem aspas nem dois-pontos. Errou o nome do campo (`nome` × `nome_completo`) e achou sozinho. Hipótese "o Pydantic converte `cpf` int → `str`" **derrubada por experimento**: `"cpf": 12345678987` sem aspas deu `422`. Continua em "Reconheço" até a 4ª (11-18). |
