@@ -3,7 +3,7 @@
 ## ▶ Hoje: a única coisa
 
 **Abertura (feita em 2026-10-27):** 1ª revisão do 1.2 registrada no `REVISOES.md`. 1.2 fechado em 2026-10-30 (PR #2, diário). Falta só o commit das notas/registros na `main`.
-**Passo 1.3:** Nova branch a partir da `main` atualizada → `PUT /api/v1/pessoas/{id}` e `DELETE /api/v1/pessoas/{id}` (soft delete: `ativo = False`, não remove da lista) → `204`.
+**Passo 1.3:** Nova branch a partir da `main` atualizada → `PUT /api/v1/pessoas/{id}` e `DELETE /api/v1/pessoas/{id}` (soft delete) · **`PUT` → `200`, `DELETE` → `204`** (seção 3 do desafio). Uma branch para cada (decisão dele em 2026-10-30: são duas features).
 
 ## Nível de cobrança atual
 
@@ -40,7 +40,7 @@ Profundidade: **E** = Essencial · **S** = Só o suficiente · **X** = Estaciona
 |---|---|:-:|---|:-:|
 | 1.1 | `POST /api/v1/pessoas` guardando em memória · Pydantic (campos e tipos) · `201` · **GitHub remoto, branch e PR** | E (Pydantic) · S (Git/HTTP) | É a primeira funcionalidade do CRUD; o desafio exige branch por feature | ☑ PR #1 com merge na `main` (`66d31a9`) |
 | 1.2 | `GET` lista e `GET` por id, em memória · `404` | E | Ler o que foi criado; primeiro status de erro | ☑ PR #2 com merge na `main` (`c21d234`) |
-| 1.3 | `PUT` e `DELETE` (soft delete) · `204` | E | Fecha o CRUD | ☐ |
+| 1.3 | `PUT` (`200`) e `DELETE` (soft delete, `204`) | E | Fecha o CRUD | ☐ |
 | 1.4 | Algoritmo do CPF e regra da idade ≥ 18 · nome 3–150, formato do e-mail e telefone E.164 *(vieram do 1.1)* · `422` | E | Lógica de domínio que o desafio quer ver escrita à mão | ☐ |
 | 1.5 | Postgres subindo no Docker + SQL básico e `UNIQUE` | S | Reiniciar o servidor apaga a lista: chegou a hora do banco | ☐ |
 | 1.6 | `pydantic-settings` e `.env` (a URL do banco) | E | Primeiro segredo do projeto — liga com o `.gitignore` do 0.3 | ☐ |
