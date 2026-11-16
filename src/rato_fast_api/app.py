@@ -16,6 +16,7 @@ class RetornarPessoa(CriarPessoa):
     criado_em: datetime 
     atualizado_em: datetime
 
+
 app = FastAPI() 
 
 lista_de_pessoas_saida = []
@@ -47,8 +48,21 @@ async def buscar_pessoa(id: uuid.UUID):
 async def buscar_lista_pessoas():
     return lista_de_pessoas_saida
              
-    
-    
+@app.put("/api/v1/pessoas/{id}")
+async def alterar_pessoa(id: uuid.UUID, pessoa_entrada_alterada: CriarPessoa):
+    agora = datetime.now(timezone.utc)
+    for indice, pessoa in enumerate(lista_de_pessoas_saida):
+        if pessoa.id == id:
+            pessoa_atualizada = RetornarPessoa(
+                **pessoa_entrada_alterada.model_dump(),
+                id = pessoa.id,
+                ativo = pessoa.ativo,
+                criado_em = pessoa.criado_em,
+                atualizado_em = agora
+            )
+            lista_de_pessoas_saida[indice] = pessoa_atualizada
+            return pessoa_atualizada 
+    raise HTTPException(status_code=404, detail="Pessoa não encontrada")
     
     
     
