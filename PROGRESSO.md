@@ -2,8 +2,8 @@
 
 ## ▶ Hoje: a única coisa
 
-**Abertura (feita em 2026-10-27):** 1ª revisão do 1.2 registrada no `REVISOES.md`. 1.2 fechado em 2026-10-30 (PR #2, diário). Falta só o commit das notas/registros na `main`.
-**Passo 1.3:** Nova branch a partir da `main` atualizada → `PUT /api/v1/pessoas/{id}` e `DELETE /api/v1/pessoas/{id}` (soft delete) · **`PUT` → `200`, `DELETE` → `204`** (seção 3 do desafio). Uma branch para cada (decisão dele em 2026-10-30: são duas features).
+**Abertura (feita em 2026-11-16):** 0.0 voltou para "Reconheço" (1ª do recomeço feita em 11-15; **2ª em 11-21**: cobrar a falha parcial **com o cenário**, de primeira). 1.2 revisada (4ª em 12-08). Nota do `PUT` na agenda (1ª em 11-17).
+**Passo 1.3, 2ª metade:** `DELETE /api/v1/pessoas/{id}` (soft delete → `204`), branch nova a partir da `main` atualizada (`feat/apagar-pessoa`). Decisões de design que entram aqui (estão no Estacionamento): o `GET` de uma pessoa inativa devolve `200` mostrando `ativo = False`; e o `PUT` em pessoa inativa deve ou não reativá-la?
 
 ## Nível de cobrança atual
 
@@ -40,7 +40,7 @@ Profundidade: **E** = Essencial · **S** = Só o suficiente · **X** = Estaciona
 |---|---|:-:|---|:-:|
 | 1.1 | `POST /api/v1/pessoas` guardando em memória · Pydantic (campos e tipos) · `201` · **GitHub remoto, branch e PR** | E (Pydantic) · S (Git/HTTP) | É a primeira funcionalidade do CRUD; o desafio exige branch por feature | ☑ PR #1 com merge na `main` (`66d31a9`) |
 | 1.2 | `GET` lista e `GET` por id, em memória · `404` | E | Ler o que foi criado; primeiro status de erro | ☑ PR #2 com merge na `main` (`c21d234`) |
-| 1.3 | `PUT` (`200`) e `DELETE` (soft delete, `204`) | E | Fecha o CRUD | ☐ |
+| 1.3 | `PUT` (`200`) e `DELETE` (soft delete, `204`) | E | Fecha o CRUD | `PUT` ☑ PR #3 (`0671782`) · `DELETE` ☐ |
 | 1.4 | Algoritmo do CPF e regra da idade ≥ 18 · nome 3–150, formato do e-mail e telefone E.164 *(vieram do 1.1)* · `422` | E | Lógica de domínio que o desafio quer ver escrita à mão | ☐ |
 | 1.5 | Postgres subindo no Docker + SQL básico e `UNIQUE` | S | Reiniciar o servidor apaga a lista: chegou a hora do banco | ☐ |
 | 1.6 | `pydantic-settings` e `.env` (a URL do banco) | E | Primeiro segredo do projeto — liga com o `.gitignore` do 0.3 | ☐ |
@@ -81,6 +81,7 @@ _Só entra aqui o que você já reproduziu ou explicou sem consulta._
 
 ## Reconheço, mas ainda não faço sozinho
 
+- `PUT` × `PATCH`: o `PUT` **substitui** a pessoa inteira pela que o cliente enviou, então o corpo vem completo e um campo opcional omitido vira `null` (testado em 2026-11-16: o `telefone`). O `PATCH` (alteração parcial) não está no desafio. Explicou com as próprias palavras, depois de dica 3 (a ficha de papel). Na 1ª versão da nota o motivo estava **circular** ("porque a classe pede"). Reusar `CriarPessoa` como entrada do `PUT` e preservar `id`, `ativo` e `criado_em` foram escolhas dele.
 - Os 3 problemas do fluxo síncrono — lentidão, acoplamento e falha parcial — e por que eles justificam a fila. Estava em "Domina" (2026-09-24), mas em 2026-11-14 só saiu o acoplamento de primeira; a lentidão veio com pista e a **falha parcial** não saiu ("não consigo visualizar o fluxo"). Voltou para cá; a contagem recomeça da 1ª.
 - *(ecossistema, S — não precisa ir para "Domina")* Como o pyenv escolhe a versão: shim → `pyenv` → arquivo `~/.pyenv/version` → `~/.pyenv/versions/<versão>/bin/python3`. Chegou à conclusão com perguntas guiadas. Na nota, ainda confundiu o arquivo `version` com a pasta `versions`.
 - *(ecossistema, S)* Por que não usar o Python `system` do macOS.
@@ -134,3 +135,4 @@ _Temas que apareceram fora do foco. Não se perdem, mas também não entram agor
 | 2026-10-06 · 1.1 · modelo de saída | Agora consigo criar um fluxo completo de entrada e saída de dados numa rota de uma API |
 | 2026-10-09 · 1.2 · GET lista | Agora consigo compreender a importância de usar retorno na função |
 | 2026-10-24 · 1.2 · GET por id e 404 | Agora consigo criar um endpoint que faz busca usando um parâmetro informado |
+| 2026-11-13 · 1.3 · PUT alterar pessoa | Agora consigo usar as classes da forma devida, explorando os fluxos de entrada e saída de dados para vários métodos |

@@ -19,6 +19,7 @@ Acompanha as revisões de cada nota. A revisão é **sem consulta**: você expli
 | [0.0](notas/0.0-por-que-fila.md) | Por que a notificação vai para uma fila | 2026-09-23 (refeita em 2026-11-14) | ☑ 11-15 | ☐ 11-21 | ☐ 11-29 | ☐ 12-29 | ☐ 2027-01-28 | ☐ 2027-02-27 |
 | [1.1](notas/1.1-classe-pydantic.md) | Modelo Pydantic: entrada × saída e validação na porta da API | 2026-10-04 | ☑ 10-06 | ☑ 10-09 | ☑ 10-24 | ☐ 11-18 | ☐ 12-18 | ☐ 2027-01-17 |
 | [1.2](notas/1.2-GET-e-404.md) | GET lista e por id: 200, 404 e 422 | 2026-10-24 | ☑ 10-27 | ☑ 11-15 | ☑ 11-15 | ☐ 12-08 | ☐ 2027-01-07 | ☐ 2027-02-06 |
+| [1.3](notas/1.3-PUT.md) | `PUT` substitui a pessoa inteira: corpo completo e opcional omitido vira `null` | 2026-11-16 | ☐ 11-17 | ☐ 11-23 | ☐ 12-01 | ☐ 12-31 | ☐ 2027-01-30 | ☐ 2027-03-01 |
 
 ## Histórico
 
