@@ -75,13 +75,13 @@ Docker multi-stage, usuário não-root, healthcheck **S** · README avaliado **E
 
 _Só entra aqui o que você já reproduziu ou explicou sem consulta._
 
-- Os 3 problemas do fluxo síncrono — lentidão, acoplamento e falha parcial — e por que eles justificam a fila. Explicado sem consulta em 2026-09-24.
 - Navegar no terminal: `pwd`, `cd`, `ls -a`, os atalhos `~`, `.` e `..`, a árvore a partir de `/` e o Tab.
 - Investigar uma ferramenta de terminal por conta própria: `--version`, `which`, `--help` e subcomando × opção (`pyenv versions` × `--version`). Feito sozinho, errando e corrigindo pela ajuda da própria ferramenta, em 2026-09-24.
 - `GET` por id tem três saídas: `200` (achou), `404` (tipo certo, mas não existe — erro que **você** levanta com `HTTPException`) e `422` (tipo errado — a tipagem `uuid.UUID` no parâmetro barra **antes** da função). Lista vazia volta `[]` com `200`; `null` só se a função não tivesse `return`. Explicado sem consulta na 1ª revisão, em 2026-10-27.
 
 ## Reconheço, mas ainda não faço sozinho
 
+- Os 3 problemas do fluxo síncrono — lentidão, acoplamento e falha parcial — e por que eles justificam a fila. Estava em "Domina" (2026-09-24), mas em 2026-11-14 só saiu o acoplamento de primeira; a lentidão veio com pista e a **falha parcial** não saiu ("não consigo visualizar o fluxo"). Voltou para cá; a contagem recomeça da 1ª.
 - *(ecossistema, S — não precisa ir para "Domina")* Como o pyenv escolhe a versão: shim → `pyenv` → arquivo `~/.pyenv/version` → `~/.pyenv/versions/<versão>/bin/python3`. Chegou à conclusão com perguntas guiadas. Na nota, ainda confundiu o arquivo `version` com a pasta `versions`.
 - *(ecossistema, S)* Por que não usar o Python `system` do macOS.
 
@@ -119,6 +119,8 @@ _Temas que apareceram fora do foco. Não se perdem, mas também não entram agor
 - Onde fica configurado o alias `python` → `python3` (arquivo de configuração do shell) (**X**: não apareceu no 0.3)
 - O que é servidor, cliente (`curl`), programa/processo e HTTP; como os dois conversam (**E**: entra no **1.2**, com `GET` e `404`. Ganchos de hoje: o `print` aparece no servidor e não no `curl`; função sem `return` → `null`)
 - Diferença entre uma classe do Pydantic (herda de `BaseModel`) e uma classe comum do Python (**S**: volta na Fase 2, quando o domínio tiver classes próprias sem Pydantic)
+- `PATCH` × `PUT`: o `PATCH` (alteração parcial) não está no desafio. Surgiu em 2026-11-13 porque a sua 1ª hipótese do `PUT` descrevia um `PATCH` (**S**: só o conceito, já entendido pela MDN; sem implementar).
+- Decisão de design: o `PUT` em uma pessoa com `ativo = False` (apagada pelo `DELETE`) deve funcionar? Hoje o código preserva o `ativo` (`ativo = pessoa.ativo`), então o `PUT` **não** reativa. Sua justificativa de 2026-11-15 era "usar o `PUT` para trazer a pessoa de volta", que pede o contrário. (**E**: decidir na sessão do `DELETE`, com o `404` × `200` da pessoa inativa.)
 
 ## Diário
 
